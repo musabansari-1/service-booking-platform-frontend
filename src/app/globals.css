@@ -2,32 +2,56 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+.slick-arrow {
+  width: 40px; /* Adjust width as needed */
+  height: 40px; /* Adjust height as needed */
+  background-color: rgba(0,0,0,0.5); /* Background color */
+  border-radius: 50%; /* Circular arrows */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1; /* Ensure arrows are on top of the slider */
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+.slick-prev, .slick-next {
+  font-size: 30;
+  padding: 5px !important;
+  color: #000000; /* Customize arrow color */
+  z-index: 1;
+  margin: 0 !important;
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+.slick-prev:before, .slick-next:before{
+  color: gray !important;
+  font-size: 30px !important;
+  margin: -8px !important;
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+/* .slick-prev {
+  left: 10px;
+} */
+
+/* .slick-next {
+  right: 10px;
+} */
+
+.slick-slide {
+  /* Override default styles here */
+  padding: 5px !important;
+  height: 100% !important;
+  /* width: 80% !important; */
+}
+
+.slick-track {
+  /* Ensure correct spacing and layout */
+  /* display: flex !important; */
+  /* gap: 10px; Space between slides */
+  margin: 10px;
+  height: 100%;
+}
+
+.react-slick-slider {
+  width: 90% !important;
+  margin-left: auto;
+  margin-right: auto;
 }
