@@ -4,9 +4,10 @@ import ServiceCard from "@/components/ServiceCard";
 import { getAllServices } from "@/services/service";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import   { Service } from '@/types';
 
 export default function Home() {
-  const [services, setServices] = useState([]);
+  const [services, setServices] = useState<Service[]>([]);
   // const service = {
   //   id: '66aa1494584635e15c073ca9',
   //   name: 'Plumber',
@@ -26,8 +27,10 @@ export default function Home() {
   },[])
 
   return (
-    <main>
-      {services.map((service) => <ServiceCard key={service._id} service={service}/>)}
-    </main>
+    <main className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-6">
+    {services.map((service: Service) => (
+      <ServiceCard key={service._id} service={service} />
+    ))}
+  </main>
   );
 }
