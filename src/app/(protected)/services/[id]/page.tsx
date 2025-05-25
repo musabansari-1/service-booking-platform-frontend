@@ -5,11 +5,12 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { getServiceById } from '@/services/service';
 import { BookingCard, DataCarousel, Modal, TimeSlot } from '@/components';
+import {Service, ServiceDetailProps} from '@/types';
 
-const ServiceDetail = ({ params }) => {
+const ServiceDetail = ({ params}:ServiceDetailProps) => {
     const router = useRouter();
     const id = params.id;
-    const [service, setService] = useState({});
+    const [service, setService] = useState<Service>();
     const [date, setDate] = useState('');
     const [time, setTime] = useState('');
     const [error, setError] = useState('');
@@ -24,7 +25,7 @@ const ServiceDetail = ({ params }) => {
     };
 
 
-    const fetchService = async (id) => {
+    const fetchService = async (id: string) => {
         try {
             console.log('Here');
             const response = await getServiceById(id);
@@ -41,7 +42,7 @@ const ServiceDetail = ({ params }) => {
         }
     }, [id]);
 
-    const handleBooking = async (e) => {
+    const handleBooking = async (e : React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         if (!date || !time) {
@@ -71,7 +72,7 @@ const ServiceDetail = ({ params }) => {
             <div className="flex flex-col md:flex-row items-center">
                 {service.imagePath && (
                     <img
-                        src={`${process.env.NEXT_PUBLIC_BASE_URL}${service.imagePath.replace(/\\/g, '/')}`}
+                        src={`${process.env.NEXT_PUBLIC_BASE_URL}/${service.imagePath.replace(/\\/g, '/')}`}
                         alt={service.name}
                         className="w-full md:w-1/2 object-cover rounded-lg mb-6 md:mb-0 md:mr-6"
                     />
