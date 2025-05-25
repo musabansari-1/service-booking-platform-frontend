@@ -1,7 +1,7 @@
 import { axiosInstance } from "@/utils";
 import axios from 'axios';
 
-export const getSlots = async (serviceId) => {
+export const getSlots = async (serviceId: string) => {
     const data = {
         serviceId,
     }

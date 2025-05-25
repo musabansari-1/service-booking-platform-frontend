@@ -1,13 +1,14 @@
 import React from 'react';
 import Link from 'next/link';
 import { AiFillStar } from "react-icons/ai";
+import {Service} from '@/types';
 
 
-const ServiceCard = ({ service }) => {
+const ServiceCard = ({ service}: {service: Service}) => {
   return (
-    <div className="bg-white border rounded-lg shadow-lg overflow-hidden w-1/4">
+    <div className="bg-white border rounded-lg shadow-lg overflow-hidden ">
       <img
-        src={`${process.env.NEXT_PUBLIC_BASE_URL}${service.imagePath.replace(/\\/g, '/')}`}
+        src={`${process.env.NEXT_PUBLIC_BASE_URL}/${service.imagePath.replace(/\\/g, '/')}`}
         alt={service.name}
         className="w-full h-48 object-cover"
       />

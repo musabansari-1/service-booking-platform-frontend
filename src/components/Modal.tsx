@@ -1,9 +1,14 @@
-// components/Modal.js
-import React from 'react';
+// components/Modal.tsx
+import React, { ReactNode } from 'react';
 import { IoClose } from "react-icons/io5";
 
+interface ModalProps {
+  isVisible: boolean;
+  onClose: () => void;
+  children: ReactNode;
+}
 
-const Modal = ({ isVisible, onClose, children }) => {
+const Modal: React.FC<ModalProps> = ({ isVisible, onClose, children }) => {
   if (!isVisible) return null;
 
   return (
