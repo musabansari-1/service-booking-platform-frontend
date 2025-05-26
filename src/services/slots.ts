@@ -6,7 +6,7 @@ export const getSlots = async (serviceId: string) => {
         serviceId,
     }
     try {
-        const response = await axiosInstance.post('/services/slots', data);
+        const response = await axiosInstance.post('/api/services/slots', data);
         return response.data;
     }
     catch(error) {

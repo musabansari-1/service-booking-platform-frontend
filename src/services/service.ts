@@ -3,7 +3,7 @@ import axios from 'axios';
 
 export const getAllServices = async () => {
     try {
-        const response = await axiosInstance.get(`/services`);
+        const response = await axiosInstance.get(`/api/services`);
         console.log(response.data);
         return response.data;
     } catch (error) {
@@ -13,7 +13,7 @@ export const getAllServices = async () => {
 
 export const getServiceById = async (serviceId: string) => {
     try {
-        const response = await axiosInstance.get(`/services/${serviceId}`);
+        const response = await axiosInstance.get(`/api/services/${serviceId}`);
         console.log(response.data);
         return response.data;
     } catch (error) {
@@ -23,7 +23,7 @@ export const getServiceById = async (serviceId: string) => {
 
 export const addService = async (serviceData: FormData) => {
     try {
-        const response = await axios.post('http://localhost:5000/api/services', serviceData, {
+        const response = await axiosInstance.post('/api/services', serviceData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             },
@@ -36,7 +36,7 @@ export const addService = async (serviceData: FormData) => {
 
 export const updateService = async (serviceId: string, serviceData: FormData) => {
     try {
-        const response = await axios.put(`http://localhost:5000/api/services/${serviceId}`, serviceData, {
+        const response = await axiosInstance.put(`/api/services/${serviceId}`, serviceData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             },
@@ -50,7 +50,7 @@ export const updateService = async (serviceId: string, serviceData: FormData) =>
 
 export const deleteService = async (serviceId: string) => {
     try {
-        const response = await axiosInstance.delete(`/services/${serviceId}`);
+        const response = await axiosInstance.delete(`/api/services/${serviceId}`);
         return response.data;
     } catch (error) {
         throw error;
