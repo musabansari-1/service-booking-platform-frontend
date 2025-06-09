@@ -5,6 +5,8 @@ import axios from '../../../axiosInstance';
 import { jwtDecode, JwtPayload } from 'jwt-decode';
 import ConfirmationModal from '@/components/ConfirmationModal';
 import { deleteBooking } from '@/services/booking';
+import { BookingCard,Modal} from '@/components';
+import {Booking} from '@/types/booking.type';
 
 interface CustomJwtPayload extends JwtPayload {
   id: string; // since backend uses decoded.id
@@ -12,11 +14,20 @@ interface CustomJwtPayload extends JwtPayload {
 
 
 const Bookings = () => {
-  const [bookings, setBookings] = useState([]);
+  const [bookings, setBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const [selectedBooking, setSelectedBooking] = useState<any>(null);
+   const [isModalVisible, setIsModalVisible] = useState(false);
+
+    const handleOpenModal = () => {
+        setIsModalVisible(true);
+    };
+
+    const handleCloseModal = () => {
+        setIsModalVisible(false);
+    };
 
   const fetchBookings = async () => {
       try {
@@ -74,6 +85,7 @@ const Bookings = () => {
 const handleDelete = async () => {
     console.log('deleting booking');
     console.log(selectedBooking._id);
+    console.log('serviceId', selectedBooking.serviceId._id);
     await deleteBooking(selectedBooking._id);
     fetchBookings();
   };
@@ -81,7 +93,13 @@ const handleDelete = async () => {
   if (loading) return <p className="text-center mt-8">Loading...</p>;
   if (error) return <p className="text-center mt-8 text-red-500">{error}</p>;
 
-  const statusStyles = {
+  type BookingStatus = 'confirmed' | 'pending' | 'canceled';
+
+  type StatusStylesType = {
+  [key in BookingStatus]: string;
+};
+
+  const statusStyles: StatusStylesType = {
     confirmed: 'text-green-600 font-semibold',
     pending: 'text-yellow-500 font-semibold',
     canceled: 'text-red-600 font-semibold'
@@ -90,6 +108,9 @@ const handleDelete = async () => {
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-10">
+      <Modal isVisible={isModalVisible} onClose={handleCloseModal}>
+                <BookingCard  serviceId = {selectedBooking?.serviceId._id}/>
+            </Modal>
       <ConfirmationModal
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
@@ -114,21 +135,26 @@ const handleDelete = async () => {
           />
           <div className="flex-1">
             <h3 className="text-xl font-semibold">{booking.serviceId.name}</h3>
-            <p className="text-gray-600">Provider: {booking.provider}</p>
+            {/* <p className="text-gray-600">Provider: {booking.provider}</p> */}
             <p className="text-gray-600">Date: {formatDate(booking.slotId.date)}</p>
             <p className="text-gray-600">Time: {booking.slotId.startTime} - {booking.slotId.endTime}</p>
             <p>
               Status:{' '}
-              <span className={statusStyles[booking.status.toLowerCase()]}>
+              <span 
+              // className={statusStyles[booking.status.toLowerCase()]}
+              >
                 {booking.status}
               </span>
             </p>
             <div className="mt-2 flex gap-2">
-              <button className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition">
+              <button onClick={async () => {
+                await setSelectedBooking(booking);
+                setIsModalVisible(true);
+                }} className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition">
                 Reschedule
               </button>
-              <button onClick={() => {
-                setSelectedBooking(booking);
+              <button onClick={async () => {
+                await setSelectedBooking(booking);
                 setIsOpen(true);
                 }} className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition">
                 Cancel
