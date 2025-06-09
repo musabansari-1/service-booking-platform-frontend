@@ -7,6 +7,8 @@ import { Navbar } from "@/components";
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { usePathname } from 'next/navigation';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 const inter = Inter({ subsets: ["latin"] });
@@ -30,6 +32,7 @@ export default function RootLayout({
       <body className={inter.className}>
       {!hideNavbarRoutes.includes(pathname) && <Navbar />}
         {children}
+        <ToastContainer position="top-right" autoClose={3000} />
         </body>
     </html>
   );

@@ -3,7 +3,10 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { DataCarousel, TimeSlot } from '.';
+import { toast } from 'react-toastify';
+
 import { getSlots } from '@/services/slots';
+
 
 // Define the slot type if not already available
 import {Slot,BookingCardProps} from '@/types';
@@ -50,6 +53,7 @@ const BookingCard = ({ serviceId }: BookingCardProps) => {
       });
 
       console.log('Booking confirmed:', response.data);
+      toast.success("Booking successful!");
       setError('');
     } catch (error) {
       setError('Failed to book the service.');
