@@ -286,7 +286,7 @@ const Profile = () => {
             <div className="pt-6 border-t border-gray-200">
               <h3 className="text-lg font-semibold text-gray-800 mb-4">Account Actions</h3>
               <div className="flex gap-4">
-                <button className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition">
+                <button onClick={() => router.push('/edit-profile')} className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition">
                   Edit Profile
                 </button>
                 <button
