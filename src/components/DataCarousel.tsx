@@ -75,9 +75,173 @@
 // export default DateCarousel;
 
 
+// "use client";
+
+// import Slider from 'react-slick';
+
+// interface DateCarouselProps {
+//   dates: string[];
+//   selectedDate: string;
+//   setSelectedDate: (date: string) => void;
+// }
+
+// const DateCarousel: React.FC<DateCarouselProps> = ({ dates, selectedDate, setSelectedDate }) => {
+//   const settings = {
+//     dots: false,
+//     infinite: true,
+//     speed: 500,
+//     slidesToShow: 4,
+//     slidesToScroll: 1,
+//     arrows: true,
+//     draggable: true,
+//     swipeToSlide: true,
+//     touchThreshold: 15,
+//     responsive: [
+//       {
+//         breakpoint: 1024,
+//         settings: {
+//           slidesToShow: 4,
+//         }
+//       },
+//       {
+//         breakpoint: 768,
+//         settings: {
+//           slidesToShow: 3,
+//         }
+//       },
+//       {
+//         breakpoint: 480,
+//         settings: {
+//           slidesToShow: 2,
+//         }
+//       }
+//     ]
+//   };
+
+//   const formatDate = (date: string): string => {
+//     date = date.split('T')[0];
+//     const [year, month, day] = date.split('-');
+//     return `${day}-${month}-${year}`;
+//   };
+
+//   return (
+//     <div className="max-w-3xl mx-auto px-4 py-10">
+//       <h2 className="text-2xl md:text-3xl font-bold mb-6 text-center text-gray-800">Select a Date</h2>
+//       <div className="shadow-lg rounded-xl bg-white p-4">
+//         <Slider {...settings} className="react-slick-slider">
+//           {dates.map((date, index) => {
+//             const isSelected = formatDate(selectedDate) === formatDate(date);
+//             return (
+//               <div key={index} className="px-2">
+//                 <div
+//                   className={`
+//                     min-w-[100px] sm:min-w-[120px] md:min-w-[140px] 
+//                     text-center p-4 rounded-lg cursor-pointer border 
+//                     transition duration-300 
+//                     ${isSelected 
+//                       ? 'bg-blue-600 text-white border-blue-600 shadow-md' 
+//                       : 'bg-gray-100 hover:bg-blue-100 text-gray-700 border-gray-300'}
+//                   `}
+//                   onClick={() => setSelectedDate(date)}
+//                 >
+//                   <span className="text-sm sm:text-base font-medium">{formatDate(date)}</span>
+//                 </div>
+//               </div>
+//             );
+//           })}
+//         </Slider>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default DateCarousel;
+
+
+// "use client";
+
+// import { Swiper, SwiperSlide } from 'swiper/react';
+// import { Navigation } from 'swiper/modules';
+// import 'swiper/css';
+// import 'swiper/css/navigation';
+
+// interface DateCarouselProps {
+//   dates: string[];
+//   selectedDate: string;
+//   setSelectedDate: (date: string) => void;
+// }
+
+// const DateCarousel: React.FC<DateCarouselProps> = ({ dates, selectedDate, setSelectedDate }) => {
+//   const formatDate = (date: string): string => {
+//     date = date.split('T')[0];
+//     const [year, month, day] = date.split('-');
+//     return `${day}-${month}-${year}`;
+//   };
+
+//   return (
+//     <div className="max-w-3xl mx-auto px-4 py-10">
+//       <h2 className="text-2xl md:text-2xl font-bold mb-6 text-center text-gray-800">Select a Date</h2>
+//       <div className="shadow-lg rounded-xl bg-white p-4">
+//         <Swiper
+//           modules={[Navigation]}
+//           navigation
+//           spaceBetween={16}
+//           slidesPerView={4}
+//           breakpoints={{
+//             1024: {
+//               slidesPerView: 4,
+//             },
+//             768: {
+//               slidesPerView: 3,
+//             },
+//             480: {
+//               slidesPerView: 2,
+//             },
+//             0: {
+//               slidesPerView: 1,
+//             }
+//           }}
+//           className="date-swiper"
+//         >
+//           {dates.map((date, index) => {
+//             const isSelected = formatDate(selectedDate) === formatDate(date);
+//             return (
+//               <SwiperSlide key={index}>
+//                 <div
+//                   className={`
+//                     min-w-[100px] sm:min-w-[120px] md:min-w-[140px] 
+//                     text-center p-4 rounded-lg cursor-pointer border 
+//                     transition duration-300 
+//                     ${isSelected
+//                       ? 'bg-blue-600 text-white border-blue-600 shadow-md'
+//                       : 'bg-gray-100 hover:bg-blue-100 text-gray-700 border-gray-300'}
+//                   `}
+//                   onClick={() => setSelectedDate(date)}
+//                 >
+//                   <span className="text-sm sm:text-base font-medium">{formatDate(date)}</span>
+//                 </div>
+//               </SwiperSlide>
+//             );
+//           })}
+//         </Swiper>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default DateCarousel;
+
+
+
+
 "use client";
 
-import Slider from 'react-slick';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/navigation';
+
+import { useEffect } from 'react';
 
 interface DateCarouselProps {
   dates: string[];
@@ -86,38 +250,6 @@ interface DateCarouselProps {
 }
 
 const DateCarousel: React.FC<DateCarouselProps> = ({ dates, selectedDate, setSelectedDate }) => {
-  const settings = {
-    dots: false,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 4,
-    slidesToScroll: 1,
-    arrows: true,
-    draggable: true,
-    swipeToSlide: true,
-    touchThreshold: 15,
-    responsive: [
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: 4,
-        }
-      },
-      {
-        breakpoint: 768,
-        settings: {
-          slidesToShow: 3,
-        }
-      },
-      {
-        breakpoint: 480,
-        settings: {
-          slidesToShow: 2,
-        }
-      }
-    ]
-  };
-
   const formatDate = (date: string): string => {
     date = date.split('T')[0];
     const [year, month, day] = date.split('-');
@@ -125,40 +257,74 @@ const DateCarousel: React.FC<DateCarouselProps> = ({ dates, selectedDate, setSel
   };
 
   return (
-    <div className="max-w-3xl mx-auto px-4 py-10">
-      <h2 className="text-2xl md:text-3xl font-bold mb-6 text-center text-gray-800">Select a Date</h2>
+    <div className="max-w-3xl mx-auto px-4 py-10 relative">
+      <h2 className="text-2xl md:text-2xl font-bold mb-6 text-center text-gray-800">Select a Date</h2>
+
+      {/* Navigation buttons */}
+      <div className="swiper-button-prev-custom absolute left-0 top-[62%] -translate-y-1/2 z-10 bg-white shadow-md rounded-full p-2 cursor-pointer hover:bg-blue-100">
+        <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+        </svg>
+      </div>
+
+      <div className="swiper-button-next-custom absolute right-0 top-[62%] -translate-y-1/2 z-10 bg-white shadow-md rounded-full p-2 cursor-pointer hover:bg-blue-100">
+        <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+        </svg>
+      </div>
+
       <div className="shadow-lg rounded-xl bg-white p-4">
-        <Slider {...settings} className="react-slick-slider">
+        <Swiper
+          modules={[Navigation]}
+          navigation={{
+            prevEl: '.swiper-button-prev-custom',
+            nextEl: '.swiper-button-next-custom',
+          }}
+          spaceBetween={16}
+          slidesPerView={4}
+          breakpoints={{
+            1024: {
+              slidesPerView: 4,
+            },
+            768: {
+              slidesPerView: 3,
+            },
+            480: {
+              slidesPerView: 2,
+            },
+            0: {
+              slidesPerView: 1,
+            }
+          }}
+          className="date-swiper"
+        >
           {dates.map((date, index) => {
             const isSelected = formatDate(selectedDate) === formatDate(date);
             return (
-              <div key={index} className="px-2">
+              <SwiperSlide key={index}>
                 <div
                   className={`
                     min-w-[100px] sm:min-w-[120px] md:min-w-[140px] 
                     text-center p-4 rounded-lg cursor-pointer border 
                     transition duration-300 
-                    ${isSelected 
-                      ? 'bg-blue-600 text-white border-blue-600 shadow-md' 
+                    ${isSelected
+                      ? 'bg-blue-600 text-white border-blue-600 shadow-md'
                       : 'bg-gray-100 hover:bg-blue-100 text-gray-700 border-gray-300'}
                   `}
                   onClick={() => setSelectedDate(date)}
                 >
                   <span className="text-sm sm:text-base font-medium">{formatDate(date)}</span>
                 </div>
-              </div>
+              </SwiperSlide>
             );
           })}
-        </Slider>
+        </Swiper>
       </div>
     </div>
   );
 };
 
 export default DateCarousel;
-
-
-
 
 
 

@@ -76,7 +76,7 @@ const TimeSlot: React.FC<TimeSlotProps> = ({
   };
 
   return (
-    <div className="mx-auto p-6 bg-white">
+    <div className=" p-6 bg-white">
       <h2 className="text-center text-2xl font-bold mb-4">Select Time Slot</h2>
 
       <div className="mb-6">
@@ -97,7 +97,7 @@ const TimeSlot: React.FC<TimeSlotProps> = ({
         </select>
       </div>
 
-      <div className="flex flex-wrap gap-4 h-64 overflow-auto">
+      <div className="flex flex-wrap gap-4  overflow-auto">
         {slots.map((slot) => {
           if (slot.date === selectedDate) {
             return (

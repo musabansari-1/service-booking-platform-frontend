@@ -58,7 +58,9 @@ const BookingCard = ({ serviceId }: BookingCardProps) => {
   };
 
   return (
-    <div className="mx-auto border-2 rounded-lg shadow-lg w-[50%] h-screen overflow-auto">
+    // <div className="mx-auto border-2 rounded-lg shadow-lg w-[50%] h-screen overflow-auto">
+    // <div className="mx-auto max-w-5xl w-full border-2 rounded-lg shadow-lg p-4">
+    <div className="mx-auto max-w-4xl w-full h-[90vh] overflow-y-auto border rounded-lg shadow-lg p-4 bg-white">
       <DataCarousel
         dates={dates}
         selectedDate={selectedDate}
