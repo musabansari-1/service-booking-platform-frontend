@@ -3,6 +3,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from '../../../axiosInstance';
 import { jwtDecode, JwtPayload } from 'jwt-decode';
+import ConfirmationModal from '@/components/ConfirmationModal';
+import { deleteBooking } from '@/services/booking';
 
 interface CustomJwtPayload extends JwtPayload {
   id: string; // since backend uses decoded.id
@@ -13,10 +15,10 @@ const Bookings = () => {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedBooking, setSelectedBooking] = useState<any>(null);
 
-
-  useEffect(() => {
-    const fetchBookings = async () => {
+  const fetchBookings = async () => {
       try {
         const token = localStorage.getItem('token');
         if (!token) {
@@ -52,6 +54,7 @@ const Bookings = () => {
       }
     };
 
+  useEffect(() => {
     fetchBookings();
   }, []);
 
@@ -68,6 +71,13 @@ const Bookings = () => {
   });
 };
 
+const handleDelete = async () => {
+    console.log('deleting booking');
+    console.log(selectedBooking._id);
+    await deleteBooking(selectedBooking._id);
+    fetchBookings();
+  };
+
   if (loading) return <p className="text-center mt-8">Loading...</p>;
   if (error) return <p className="text-center mt-8 text-red-500">{error}</p>;
 
@@ -77,8 +87,16 @@ const Bookings = () => {
     canceled: 'text-red-600 font-semibold'
   };
 
+
   return (
     <div className="max-w-4xl mx-auto px-4 py-10">
+      <ConfirmationModal
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        onConfirm={handleDelete}
+        title="Cancel Confirmation"
+        message="Are you sure you want to cancel this booking? This cannot be undone."
+      />
       <h1 className="text-3xl font-bold mb-8 text-center">My Bookings</h1>
       {bookings.length === 0 ? (
         <p className="text-center text-gray-600">No bookings found.</p>
@@ -109,7 +127,10 @@ const Bookings = () => {
               <button className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition">
                 Reschedule
               </button>
-              <button className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition">
+              <button onClick={() => {
+                setSelectedBooking(booking);
+                setIsOpen(true);
+                }} className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition">
                 Cancel
               </button>
               {/* <button className="px-3 py-1 bg-gray-500 text-white rounded hover:bg-gray-600 transition">
