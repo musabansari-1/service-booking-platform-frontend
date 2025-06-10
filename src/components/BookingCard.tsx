@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from 'react';
-import axios from 'axios';
+import axios from '../axiosInstance';
 import { DataCarousel, TimeSlot } from '.';
 import { toast } from 'react-toastify';
 
@@ -46,7 +46,7 @@ const BookingCard = ({ serviceId }: BookingCardProps) => {
     }
 
     try {
-      const response = await axios.post('http://localhost:5000/api/bookings', {
+      const response = await axios.post('/api/bookings', {
         serviceId,
         slotId: selectedSlot._id,
         userId: '6696133852d485188b7ab267', // Replace with dynamic ID in production
