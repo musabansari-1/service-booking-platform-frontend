@@ -129,7 +129,8 @@ const handleDelete = async () => {
           className="flex bg-white rounded-xl shadow-md p-4 mb-4 items-center"
         >
           <img
-            src={`${process.env.NEXT_PUBLIC_BASE_URL}/${booking.serviceId.imagePath.replace(/\\/g, '/')}`}
+            // src={`${process.env.NEXT_PUBLIC_BASE_URL}/${booking.serviceId.imagePath.replace(/\\/g, '/')}`}
+            src={booking.serviceId.imagePath}
             alt="Service"
             className="w-[40%] h-[100%] object-cover rounded-lg mr-4"
           />

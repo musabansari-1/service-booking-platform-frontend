@@ -29,7 +29,7 @@ const ServiceDetail = ({ params}:ServiceDetailProps) => {
         try {
             console.log('Here');
             const response = await getServiceById(id);
-            console.log(`${process.env.NEXT_PUBLIC_BASE_URL}/${response.imagePath.replace(/\\/g, '/')}`);
+            // console.log(`${process.env.NEXT_PUBLIC_BASE_URL}/${response.imagePath.replace(/\\/g, '/')}`);
             setService(response);
         } catch (err) {
             console.log(err);
@@ -72,7 +72,8 @@ const ServiceDetail = ({ params}:ServiceDetailProps) => {
             <div className="flex flex-col md:flex-row items-center">
                 {service.imagePath && (
                     <img
-                        src={`${process.env.NEXT_PUBLIC_BASE_URL}/${service.imagePath.replace(/\\/g, '/')}`}
+                        // src={`${process.env.NEXT_PUBLIC_BASE_URL}/${service.imagePath.replace(/\\/g, '/')}`}
+                        src={service.imagePath}
                         alt={service.name}
                         className="w-full md:w-1/2 object-cover rounded-lg mb-6 md:mb-0 md:mr-6"
                     />

@@ -8,7 +8,8 @@ const ServiceCard = ({ service}: {service: Service}) => {
   return (
     <div className="bg-white border rounded-lg shadow-lg overflow-hidden ">
       <img
-        src={`${process.env.NEXT_PUBLIC_BASE_URL}/${service.imagePath.replace(/\\/g, '/')}`}
+        // src={`${process.env.NEXT_PUBLIC_BASE_URL}/${service.imagePath.replace(/\\/g, '/')}`}
+        src={service.imagePath}
         alt={service.name}
         className="w-full h-48 object-cover"
       />
