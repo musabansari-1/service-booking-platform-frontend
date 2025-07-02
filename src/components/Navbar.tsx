@@ -139,7 +139,7 @@ const Navbar = () => {
 
   return (
     <nav className="bg-white shadow-md relative">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-2">
         <div className="flex items-center justify-between h-16">
           {/* Left: Logo */}
           <div className="flex-shrink-0">
@@ -157,7 +157,7 @@ const Navbar = () => {
             </Link>
 
             {/* Profile Dropdown */}
-            <div className="relative">
+            <div className="relative align-middle mt-auto mb-auto">
               <button onClick={toggleProfile} className="focus:outline-none">
                 <FaCircleUser size={24} />
               </button>
@@ -172,14 +172,7 @@ const Navbar = () => {
                       Profile
                     </span>
                   </Link>
-                  <Link href="/settings">
-                    <span
-                      onClick={() => setProfileOpen(false)}
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
-                    >
-                      Settings
-                    </span>
-                  </Link>
+                  
                   <button
                     onClick={handleLogout}
                     className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
@@ -214,13 +207,13 @@ const Navbar = () => {
       {/* Mobile Dropdown */}
       {isOpen && (
         <div className="sm:hidden px-2 pt-2 pb-3 space-y-1">
-          <Link href="/">
+          {/* <Link href="/">
             <span className="block text-gray-800 px-3 py-2 rounded-md">Home</span>
-          </Link>
+          </Link> */}
           <Link href="/bookings">
             <span className="block text-gray-800 px-3 py-2 rounded-md">My Bookings</span>
           </Link>
-          <Link href="/about">
+          {/* <Link href="/about">
             <span className="block text-gray-800 px-3 py-2 rounded-md">About</span>
           </Link>
           <Link href="/services">
@@ -228,7 +221,7 @@ const Navbar = () => {
           </Link>
           <Link href="/contact">
             <span className="block text-gray-800 px-3 py-2 rounded-md">Contact</span>
-          </Link>
+          </Link> */}
         </div>
       )}
     </nav>
