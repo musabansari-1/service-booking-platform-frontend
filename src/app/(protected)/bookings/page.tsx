@@ -10,7 +10,8 @@ import { Booking } from '@/types/booking.type';
 import { FiCalendar, FiClock, FiTrash2, FiRefreshCw, FiSearch } from 'react-icons/fi';
 
 interface CustomJwtPayload extends JwtPayload {
-  id: string;
+  id?: string;
+  _id?: string;
 }
 
 const statusStyles: Record<Booking['status'], string> = {
@@ -45,7 +46,7 @@ const Bookings = () => {
       }
 
       const decoded = jwtDecode<CustomJwtPayload>(token);
-      const userId = decoded.id;
+      const userId = decoded.id || decoded._id;
 
       if (!userId) {
         setError('Unable to identify your account.');

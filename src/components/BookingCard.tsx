@@ -7,6 +7,12 @@ import { toast } from 'react-toastify';
 import { getSlots } from '@/services/slots';
 import { Slot, BookingCardProps } from '@/types';
 import { FiCalendar, FiClock, FiCheckCircle } from 'react-icons/fi';
+import { jwtDecode, JwtPayload } from 'jwt-decode';
+
+interface CustomJwtPayload extends JwtPayload {
+  id?: string;
+  _id?: string;
+}
 
 const BookingCard = ({ serviceId }: BookingCardProps) => {
   const [selectedDate, setSelectedDate] = useState<string>('');
@@ -17,6 +23,7 @@ const BookingCard = ({ serviceId }: BookingCardProps) => {
   const [dates, setDates] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
   const [booking, setBooking] = useState(false);
+  const [userId, setUserId] = useState<string>('');
 
   const fetchSlots = async () => {
     try {
@@ -38,6 +45,22 @@ const BookingCard = ({ serviceId }: BookingCardProps) => {
     fetchSlots();
   }, []);
 
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+      setError('Please log in to book a service.');
+      return;
+    }
+
+    try {
+      const decoded = jwtDecode<CustomJwtPayload>(token);
+      setUserId(decoded.id || decoded._id || '');
+    } catch (err) {
+      setError('Your session is invalid. Please log in again.');
+    }
+  }, []);
+
   const handleBooking = async () => {
     if (!selectedSlot) {
       setError('Please select a time slot.');
@@ -46,10 +69,15 @@ const BookingCard = ({ serviceId }: BookingCardProps) => {
 
     try {
       setBooking(true);
+      if (!userId) {
+        setError('Please log in again to continue.');
+        return;
+      }
+
       await axios.post('/api/bookings', {
         serviceId,
         slotId: selectedSlot._id,
-        userId: '6696133852d485188b7ab267',
+        userId,
       });
 
       toast.success('Booking successful!');
