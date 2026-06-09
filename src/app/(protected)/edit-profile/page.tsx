@@ -1,10 +1,10 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import axiosInstance from '../../../axiosInstance';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { FiArrowLeft, FiCalendar, FiMail, FiUser } from 'react-icons/fi';
 
 const EditProfile = () => {
   const [formData, setFormData] = useState({
@@ -15,19 +15,21 @@ const EditProfile = () => {
     dateOfBirth: '',
   });
   const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
     const fetchProfile = async () => {
       try {
         const res = await axiosInstance.get('/api/auth/me');
-        const { firstName, lastName, email, gender, dateOfBirth } = res.data.user;
+        const { firstName, lastName, email, gender, dateOfBirth, dob } = res.data.user;
+        const rawDate = dateOfBirth || dob || '';
         setFormData({
           firstName: firstName || '',
           lastName: lastName || '',
           email: email || '',
           gender: gender || '',
-          dateOfBirth: dateOfBirth ? dateOfBirth.split('T')[0] : '',
+          dateOfBirth: rawDate ? rawDate.split('T')[0] : '',
         });
       } catch (error) {
         toast.error('Failed to load profile');
@@ -41,7 +43,7 @@ const EditProfile = () => {
   }, [router]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       [e.target.name]: e.target.value,
     }));
@@ -49,6 +51,8 @@ const EditProfile = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setSaving(true);
+
     try {
       await axiosInstance.put('/api/auth/update-profile', {
         firstName: formData.firstName,
@@ -60,92 +64,137 @@ const EditProfile = () => {
       router.push('/profile');
     } catch (error) {
       toast.error('Failed to update profile');
+    } finally {
+      setSaving(false);
     }
   };
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-screen">
-        <p>Loading...</p>
+      <div className="min-h-screen bg-slate-50 px-4 py-10">
+        <div className="mx-auto max-w-3xl rounded-[2rem] border border-slate-200 bg-white p-8 shadow-sm">
+          <div className="animate-pulse space-y-4">
+            <div className="h-8 w-52 rounded-full bg-slate-200" />
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div className="h-14 rounded-2xl bg-slate-200" />
+              <div className="h-14 rounded-2xl bg-slate-200" />
+              <div className="h-14 rounded-2xl bg-slate-200 sm:col-span-2" />
+              <div className="h-14 rounded-2xl bg-slate-200 sm:col-span-2" />
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 py-10 px-4">
-      <div className="max-w-xl mx-auto bg-white p-8 shadow-lg rounded-lg">
-        <h1 className="text-2xl font-bold text-center mb-6 text-gray-800">Edit Profile</h1>
-        <form onSubmit={handleSubmit} className="space-y-4">
+    <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(59,130,246,0.08),_transparent_35%),linear-gradient(to_bottom,_#f8fafc,_#eff6ff_45%,_#f8fafc)] px-4 py-10">
+      <div className="mx-auto max-w-3xl overflow-hidden rounded-[2rem] border border-white/70 bg-white shadow-[0_30px_100px_-45px_rgba(15,23,42,0.45)]">
+        <div className="flex items-center justify-between border-b border-slate-200 px-6 py-5 sm:px-8">
           <div>
-            <label className="block text-gray-700">First Name</label>
-            <input
-              type="text"
-              name="firstName"
-              value={formData.firstName}
-              onChange={handleChange}
-              className="mt-1 block w-full px-4 py-2 border rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-              required
-            />
+            <p className="text-sm uppercase tracking-[0.22em] text-slate-500">Account</p>
+            <h1 className="mt-1 text-2xl font-semibold text-slate-950">Edit profile</h1>
           </div>
-          <div>
-            <label className="block text-gray-700">Last Name</label>
-            <input
-              type="text"
-              name="lastName"
-              value={formData.lastName}
-              onChange={handleChange}
-              className="mt-1 block w-full px-4 py-2 border rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-              required
-            />
-          </div>
-          <div>
-            <label className="block text-gray-700">Email (unchangeable)</label>
-            <input
-              type="email"
-              name="email"
-              value={formData.email}
-              readOnly
-              className="mt-1 block w-full px-4 py-2 border bg-gray-100 rounded-md shadow-sm text-gray-500"
-            />
-          </div>
-          <div>
-            <label className="block text-gray-700">Gender</label>
-            <select
-              name="gender"
-              value={formData.gender}
-              onChange={handleChange}
-              className="mt-1 block w-full px-4 py-2 border rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-            >
-              <option value="">Select gender</option>
-              <option value="male">Male</option>
-              <option value="female">Female</option>
-              <option value="other">Other</option>
-            </select>
-          </div>
-          <div>
-            <label className="block text-gray-700">Date of Birth</label>
-            <input
-              type="date"
-              name="dateOfBirth"
-              value={formData.dateOfBirth}
-              onChange={handleChange}
-              className="mt-1 block w-full px-4 py-2 border rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-            />
+          <button
+            type="button"
+            onClick={() => router.push('/profile')}
+            className="inline-flex items-center gap-2 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm font-medium text-slate-700 transition hover:bg-slate-100"
+          >
+            <FiArrowLeft />
+            Back
+          </button>
+        </div>
+
+        <form onSubmit={handleSubmit} className="space-y-5 p-6 sm:p-8">
+          <div className="grid gap-5 sm:grid-cols-2">
+            <label className="block space-y-2">
+              <span className="text-sm font-medium text-slate-700">First name</span>
+              <div className="relative">
+                <FiUser className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
+                <input
+                  type="text"
+                  name="firstName"
+                  value={formData.firstName}
+                  onChange={handleChange}
+                  className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 pl-11 text-slate-900 outline-none transition focus:border-slate-900 focus:bg-white focus:ring-4 focus:ring-slate-900/5"
+                  required
+                />
+              </div>
+            </label>
+
+            <label className="block space-y-2">
+              <span className="text-sm font-medium text-slate-700">Last name</span>
+              <div className="relative">
+                <FiUser className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
+                <input
+                  type="text"
+                  name="lastName"
+                  value={formData.lastName}
+                  onChange={handleChange}
+                  className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 pl-11 text-slate-900 outline-none transition focus:border-slate-900 focus:bg-white focus:ring-4 focus:ring-slate-900/5"
+                  required
+                />
+              </div>
+            </label>
+
+            <label className="block space-y-2 sm:col-span-2">
+              <span className="text-sm font-medium text-slate-700">Email</span>
+              <div className="relative">
+                <FiMail className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  readOnly
+                  className="w-full rounded-2xl border border-slate-200 bg-slate-100 px-4 py-3 pl-11 text-slate-500 outline-none"
+                />
+              </div>
+            </label>
+
+            <label className="block space-y-2">
+              <span className="text-sm font-medium text-slate-700">Gender</span>
+              <select
+                name="gender"
+                value={formData.gender}
+                onChange={handleChange}
+                className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none transition focus:border-slate-900 focus:bg-white focus:ring-4 focus:ring-slate-900/5"
+              >
+                <option value="">Select gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+              </select>
+            </label>
+
+            <label className="block space-y-2">
+              <span className="text-sm font-medium text-slate-700">Date of birth</span>
+              <div className="relative">
+                <FiCalendar className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
+                <input
+                  type="date"
+                  name="dateOfBirth"
+                  value={formData.dateOfBirth}
+                  onChange={handleChange}
+                  className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 pl-11 text-slate-900 outline-none transition focus:border-slate-900 focus:bg-white focus:ring-4 focus:ring-slate-900/5"
+                />
+              </div>
+            </label>
           </div>
 
-          <div className="flex justify-end gap-4 pt-4">
-            <button
-              type="submit"
-              className="bg-blue-600 text-white px-5 py-2 rounded-md hover:bg-blue-700 transition"
-            >
-              Save Changes
-            </button>
+          <div className="flex flex-wrap justify-end gap-3 pt-2">
             <button
               type="button"
               onClick={() => router.push('/profile')}
-              className="bg-gray-300 text-gray-800 px-5 py-2 rounded-md hover:bg-gray-400 transition"
+              className="rounded-2xl border border-slate-200 bg-white px-5 py-3 text-sm font-medium text-slate-700 transition hover:bg-slate-50"
             >
               Cancel
+            </button>
+            <button
+              type="submit"
+              disabled={saving}
+              className="rounded-2xl bg-slate-950 px-5 py-3 text-sm font-medium text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-70"
+            >
+              {saving ? 'Saving...' : 'Save changes'}
             </button>
           </div>
         </form>

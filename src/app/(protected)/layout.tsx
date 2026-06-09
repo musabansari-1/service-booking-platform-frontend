@@ -35,7 +35,13 @@ export default function ProtectedLayout({ children }: { children: ReactNode }) {
   }, []);
 
   if (loading) {
-    return <div className="p-6 text-center">Checking authentication...</div>;
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-slate-50 px-4">
+        <div className="rounded-3xl border border-slate-200 bg-white px-6 py-5 text-slate-700 shadow-sm">
+          Checking authentication...
+        </div>
+      </div>
+    );
   }
 
   if (!authorized) return null;
