@@ -1,39 +1,56 @@
 import React from 'react';
 import Link from 'next/link';
 import { AiFillStar } from "react-icons/ai";
-import {Service} from '@/types';
+import { FiClock, FiArrowRight } from "react-icons/fi";
+import { Service } from '@/types';
 
 
 const ServiceCard = ({ service}: {service: Service}) => {
   return (
-    <div className="bg-white border rounded-lg shadow-lg overflow-hidden ">
-      <img
-        // src={`${process.env.NEXT_PUBLIC_BASE_URL}/${service.imagePath.replace(/\\/g, '/')}`}
-        src={service.imagePath}
-        alt={service.name}
-        className="w-full h-48 object-cover"
-      />
-      <div className="p-6">
-        <div className='flex justify-between'>
-        <h3 className="text-xl font-semibold mb-2">{service.name}</h3>
-        <span className="text-lg font-bold">${service.price}</span>
+    <article className="group overflow-hidden rounded-3xl border border-slate-200/80 bg-white shadow-[0_20px_60px_-30px_rgba(15,23,42,0.35)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_28px_70px_-30px_rgba(15,23,42,0.45)]">
+      <div className="relative overflow-hidden">
+        <img
+          src={service.imagePath}
+          alt={service.name}
+          className="h-52 w-full object-cover transition duration-500 group-hover:scale-105"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/55 via-slate-950/0 to-transparent" />
+        <div className="absolute left-4 top-4 rounded-full bg-white/90 px-3 py-1 text-sm font-semibold text-slate-900 shadow-sm backdrop-blur">
+          ${service.price}
         </div>
-        <p className="text-gray-700 mb-4 truncate">{service.description}</p>
-        <div className="flex items-center justify-between w-full">
-            <div className='flex items-center'>
-            <AiFillStar />
-            <p className="text-gray-700 ">5</p>
-            <p className="ml-1 text-gray-400 ">(60)</p>
-            </div>
-        
-          <Link href={`/services/${service._id}`} passHref>
-            <button className=" bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
-              View Details
-            </button>
+        <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between text-white">
+          <div className="flex items-center gap-2 rounded-full bg-slate-950/55 px-3 py-1.5 text-sm backdrop-blur">
+            <FiClock className="text-base" />
+            <span>{service.duration} min</span>
+          </div>
+          <div className="flex items-center gap-1 rounded-full bg-emerald-400/90 px-3 py-1.5 text-sm font-semibold text-slate-950 backdrop-blur">
+            <AiFillStar className="text-base" />
+            <span>4.9</span>
+          </div>
+        </div>
+      </div>
+
+      <div className="space-y-4 p-5">
+        <div className="space-y-2">
+          <h3 className="text-xl font-semibold tracking-tight text-slate-900">{service.name}</h3>
+          <p className="max-h-12 overflow-hidden text-sm leading-6 text-slate-600">{service.description}</p>
+        </div>
+
+        <div className="flex items-center justify-between gap-3">
+          <div className="text-sm text-slate-500">
+            Trusted by local customers
+          </div>
+
+          <Link
+            href={`/services/${service._id}`}
+            className="inline-flex items-center gap-2 rounded-full bg-slate-900 px-4 py-2.5 text-sm font-medium text-white transition-all duration-300 hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-900/20"
+          >
+            View Details
+            <FiArrowRight />
           </Link>
         </div>
       </div>
-    </div>
+    </article>
   );
 };
 

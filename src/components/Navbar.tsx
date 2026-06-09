@@ -1,227 +1,138 @@
-// "use client";
+"use client";
 
-// import React, { useState } from 'react';
-// import Link from 'next/link';
-// import { useRouter } from 'next/navigation';
-// import { FaCircleUser } from "react-icons/fa6";
-
-
-// const Navbar = () => {
-//   const [isOpen, setIsOpen] = useState(false);
-//   const [profileOpen, setProfileOpen] = useState(false);
-//   const router = useRouter();
-
-
-
-//   const toggleMenu = () => setIsOpen(!isOpen);
-//   const toggleProfile = () => setProfileOpen(!profileOpen);
-
-//   const handleLogout = () => {
-//     // Clear token from localStorage
-//     localStorage.removeItem('token');
-//     // Redirect to login page
-//     router.push('/login');
-//   };
-
-//   return (
-//     <nav className="bg-white shadow-md relative">
-//       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-//         <div className="flex items-center justify-between h-16">
-//           {/* Mobile menu button */}
-//           <div className="sm:hidden">
-//             <button
-//               onClick={toggleMenu}
-//               className="p-2 rounded-md text-gray-500 hover:text-white hover:bg-gray-700 focus:outline-none"
-//             >
-//               {isOpen ? (
-//                 <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-//                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-//                 </svg>
-//               ) : (
-//                 <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-//                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16m-7 6h7" />
-//                 </svg>
-//               )}
-//             </button>
-//           </div>
-
-//           {/* Logo and Nav Links */}
-//           <div className="flex items-center justify-between w-full">
-//             <Link href="/"><span className="text-xl font-bold text-gray-900">AtUrService</span></Link>
-//             {/* <div className="hidden sm:flex space-x-6 ml-6">
-//               <Link href="/"><span className="text-gray-800 hover:text-blue-600">Home</span></Link>
-//               <Link href="/about"><span className="text-gray-800 hover:text-blue-600">About</span></Link>
-//               <Link href="/services"><span className="text-gray-800 hover:text-blue-600">Services</span></Link>
-//               <Link href="/contact"><span className="text-gray-800 hover:text-blue-600">Contact</span></Link>
-//             </div> */}
-
-//             {/* Profile Icon */}
-//             <div className="relative ml-4 mt-auto mb-auto">
-//               <button onClick={toggleProfile} className="focus:outline-none">
-//                 <FaCircleUser size={24}/>
-//               </button>
-
-//               {profileOpen && (
-//                 <div className="absolute right-0 mt-2 w-48 bg-white border rounded-md shadow-lg z-20">
-//                   <Link href="/profile">
-//                     <span
-//                       onClick={() => setProfileOpen(false)}
-//                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
-//                     >
-//                       Profile
-//                     </span>
-//                   </Link>
-//                   <Link href="/bookings">
-//                     <span
-//                       onClick={() => setProfileOpen(false)}
-//                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
-//                     >
-//                       My Bookings
-//                     </span>
-//                   </Link>
-//                   <Link href="/settings">
-//                     <span
-//                       onClick={() => setProfileOpen(false)}
-//                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
-//                     >
-//                       Settings
-//                     </span>
-//                   </Link>
-//                   <button
-//                     onClick={handleLogout}
-//                     className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-//                   >
-//                     Logout
-//                   </button>
-//                 </div>
-//               )}
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-
-//       {/* Mobile dropdown */}
-//       {isOpen && (
-//         <div className="sm:hidden px-2 pt-2 pb-3 space-y-1">
-//           <Link href="/"><span className="block text-gray-800 px-3 py-2 rounded-md">Home</span></Link>
-//           <Link href="/about"><span className="block text-gray-800 px-3 py-2 rounded-md">About</span></Link>
-//           <Link href="/services"><span className="block text-gray-800 px-3 py-2 rounded-md">Services</span></Link>
-//           <Link href="/contact"><span className="block text-gray-800 px-3 py-2 rounded-md">Contact</span></Link>
-//         </div>
-//       )}
-//     </nav>
-//   );
-// };
-
-// export default Navbar;
-
-
-
-'use client';
-
-import React, { useState } from 'react';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import React, { useState } from "react";
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 import { FaCircleUser } from "react-icons/fa6";
+import { FiMenu, FiX, FiLogOut, FiUser, FiCalendar } from "react-icons/fi";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
   const router = useRouter();
+  const pathname = usePathname();
 
-  const toggleMenu = () => setIsOpen(!isOpen);
-  const toggleProfile = () => setProfileOpen(!profileOpen);
+  const toggleMenu = () => setIsOpen((current) => !current);
+  const toggleProfile = () => setProfileOpen((current) => !current);
 
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    router.push('/login');
+  const closeDropdowns = () => {
+    setIsOpen(false);
+    setProfileOpen(false);
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    closeDropdowns();
+    router.push("/login");
+  };
+
+  const navLinkClass = (href: string) =>
+    `rounded-full px-4 py-2 text-sm font-medium transition ${
+      pathname === href
+        ? "bg-slate-900 text-white shadow-lg shadow-slate-900/15"
+        : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+    }`;
+
   return (
-    <nav className="bg-white shadow-md relative">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-2">
-        <div className="flex items-center justify-between h-16">
-          {/* Left: Logo */}
-          <div className="flex-shrink-0">
-            <Link href="/">
-  <span className="text-2xl font-extrabold text-blue-600 tracking-wide">
-    At<span className="text-gray-900">Ur</span>Service
-  </span>
-</Link>
+    <nav className="sticky top-0 z-50 border-b border-white/60 bg-white/80 backdrop-blur-xl">
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
+        <Link href="/" className="group flex items-center gap-3" onClick={closeDropdowns}>
+          <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-slate-900 text-white shadow-lg shadow-slate-900/15 transition group-hover:scale-105">
+            <span className="text-lg font-semibold">A</span>
           </div>
-
-          {/* Right: Links and Profile */}
-          <div className="flex items-center space-x-6">
-            <Link href="/bookings">
-              <span className="text-gray-800 hover:text-blue-600 cursor-pointer hidden sm:inline">My Bookings</span>
-            </Link>
-
-            {/* Profile Dropdown */}
-            <div className="relative align-middle mt-auto mb-auto">
-              <button onClick={toggleProfile} className="focus:outline-none">
-                <FaCircleUser size={24} />
-              </button>
-
-              {profileOpen && (
-                <div className="absolute right-0 mt-2 w-48 bg-white border rounded-md shadow-lg z-20">
-                  <Link href="/profile">
-                    <span
-                      onClick={() => setProfileOpen(false)}
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
-                    >
-                      Profile
-                    </span>
-                  </Link>
-                  
-                  <button
-                    onClick={handleLogout}
-                    className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                  >
-                    Logout
-                  </button>
-                </div>
-              )}
+          <div>
+            <div className="text-lg font-semibold tracking-tight text-slate-950">
+              At<span className="text-slate-500">Ur</span>Service
             </div>
+            <div className="text-xs text-slate-500">Book trusted services nearby</div>
+          </div>
+        </Link>
 
-            {/* Mobile menu toggle */}
-            <div className="sm:hidden">
-              <button
-                onClick={toggleMenu}
-                className="p-2 rounded-md text-gray-500 hover:text-white hover:bg-gray-700 focus:outline-none"
-              >
-                {isOpen ? (
-                  <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                ) : (
-                  <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16m-7 6h7" />
-                  </svg>
-                )}
-              </button>
-            </div>
+        <div className="hidden items-center gap-3 md:flex">
+          <Link href="/" className={navLinkClass("/")}>
+            Home
+          </Link>
+          <Link href="/bookings" className={navLinkClass("/bookings")}>
+            <span className="inline-flex items-center gap-2">
+              <FiCalendar />
+              My Bookings
+            </span>
+          </Link>
+
+          <div className="relative">
+            <button
+              onClick={toggleProfile}
+              className="flex items-center gap-3 rounded-full border border-slate-200 bg-white px-3 py-2 text-slate-700 shadow-sm transition hover:border-slate-300 hover:bg-slate-50"
+            >
+              <FaCircleUser size={22} />
+              <span className="hidden text-sm font-medium lg:inline">Account</span>
+            </button>
+
+            {profileOpen && (
+              <div className="absolute right-0 mt-3 w-56 overflow-hidden rounded-2xl border border-slate-200 bg-white p-2 shadow-[0_20px_60px_-35px_rgba(15,23,42,0.5)]">
+                <Link
+                  href="/profile"
+                  onClick={closeDropdowns}
+                  className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm text-slate-700 transition hover:bg-slate-50 hover:text-slate-950"
+                >
+                  <FiUser />
+                  Profile
+                </Link>
+                <button
+                  onClick={handleLogout}
+                  className="flex w-full items-center gap-3 rounded-xl px-4 py-3 text-left text-sm text-slate-700 transition hover:bg-slate-50 hover:text-slate-950"
+                >
+                  <FiLogOut />
+                  Logout
+                </button>
+              </div>
+            )}
           </div>
         </div>
+
+        <button
+          onClick={toggleMenu}
+          className="inline-flex items-center justify-center rounded-full border border-slate-200 bg-white p-2 text-slate-700 shadow-sm transition hover:bg-slate-50 md:hidden"
+          aria-label="Toggle menu"
+        >
+          {isOpen ? <FiX className="text-xl" /> : <FiMenu className="text-xl" />}
+        </button>
       </div>
 
-      {/* Mobile Dropdown */}
       {isOpen && (
-        <div className="sm:hidden px-2 pt-2 pb-3 space-y-1">
-          {/* <Link href="/">
-            <span className="block text-gray-800 px-3 py-2 rounded-md">Home</span>
-          </Link> */}
-          <Link href="/bookings">
-            <span className="block text-gray-800 px-3 py-2 rounded-md">My Bookings</span>
-          </Link>
-          {/* <Link href="/about">
-            <span className="block text-gray-800 px-3 py-2 rounded-md">About</span>
-          </Link>
-          <Link href="/services">
-            <span className="block text-gray-800 px-3 py-2 rounded-md">Services</span>
-          </Link>
-          <Link href="/contact">
-            <span className="block text-gray-800 px-3 py-2 rounded-md">Contact</span>
-          </Link> */}
+        <div className="border-t border-slate-200 bg-white/95 px-4 py-4 shadow-lg md:hidden">
+          <div className="space-y-2">
+            <Link
+              href="/"
+              onClick={closeDropdowns}
+              className="block rounded-2xl px-4 py-3 text-sm font-medium text-slate-700 transition hover:bg-slate-100 hover:text-slate-950"
+            >
+              Home
+            </Link>
+            <Link
+              href="/bookings"
+              onClick={closeDropdowns}
+              className="flex items-center gap-2 rounded-2xl px-4 py-3 text-sm font-medium text-slate-700 transition hover:bg-slate-100 hover:text-slate-950"
+            >
+              <FiCalendar />
+              My Bookings
+            </Link>
+            <Link
+              href="/profile"
+              onClick={closeDropdowns}
+              className="flex items-center gap-2 rounded-2xl px-4 py-3 text-sm font-medium text-slate-700 transition hover:bg-slate-100 hover:text-slate-950"
+            >
+              <FiUser />
+              Profile
+            </Link>
+            <button
+              onClick={handleLogout}
+              className="flex w-full items-center gap-2 rounded-2xl px-4 py-3 text-left text-sm font-medium text-slate-700 transition hover:bg-slate-100 hover:text-slate-950"
+            >
+              <FiLogOut />
+              Logout
+            </button>
+          </div>
         </div>
       )}
     </nav>
@@ -229,5 +140,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-
-

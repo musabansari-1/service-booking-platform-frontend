@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import type { SearchFilters } from "@/services/search";
 import { getPopularDurations } from "@/services/search";
+import { FiFilter, FiRotateCcw, FiSearch } from "react-icons/fi";
 
 interface SearchFiltersProps {
   onFiltersChange: (filters: SearchFilters) => void;
@@ -40,25 +41,46 @@ export default function SearchFilters({ onFiltersChange, initialFilters }: Searc
   };
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-md mb-6">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        {/* Service Name Search */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Search Services
-          </label>
-          <input
-            type="text"
-            placeholder="Service name..."
-            value={filters.name || ""}
-            onChange={(e) => handleInputChange("name", e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
+    <div className="rounded-3xl border border-white/50 bg-white/80 p-5 shadow-[0_20px_60px_-40px_rgba(15,23,42,0.5)] backdrop-blur-xl md:p-6">
+      <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
+        <div className="flex items-center gap-3">
+          <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-slate-900 text-white shadow-lg shadow-slate-900/20">
+            <FiFilter />
+          </div>
+          <div>
+            <h2 className="text-lg font-semibold text-slate-900">Refine your search</h2>
+            <p className="text-sm text-slate-600">Mix price, duration, and service name to narrow the list.</p>
+          </div>
         </div>
 
-        {/* Min Price */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+        <button
+          onClick={clearFilters}
+          className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 transition hover:border-slate-300 hover:bg-slate-50"
+        >
+          <FiRotateCcw />
+          Clear filters
+        </button>
+      </div>
+
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
+        <div className="space-y-2">
+          <label className="text-sm font-medium text-slate-700">
+            Search Services
+          </label>
+          <div className="relative">
+            <FiSearch className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+            <input
+              type="text"
+              placeholder="Service name..."
+              value={filters.name || ""}
+              onChange={(e) => handleInputChange("name", e.target.value)}
+              className="w-full rounded-2xl border border-slate-200 bg-white py-3 pl-10 pr-4 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-slate-900 focus:ring-4 focus:ring-slate-900/5"
+            />
+          </div>
+        </div>
+
+        <div className="space-y-2">
+          <label className="text-sm font-medium text-slate-700">
             Min Price ($)
           </label>
           <input
@@ -67,13 +89,12 @@ export default function SearchFilters({ onFiltersChange, initialFilters }: Searc
             min="0"
             value={filters.minPrice || ""}
             onChange={(e) => handleInputChange("minPrice", e.target.value ? parseFloat(e.target.value) : undefined)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-slate-900 focus:ring-4 focus:ring-slate-900/5"
           />
         </div>
 
-        {/* Max Price */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+        <div className="space-y-2">
+          <label className="text-sm font-medium text-slate-700">
             Max Price ($)
           </label>
           <input
@@ -82,19 +103,18 @@ export default function SearchFilters({ onFiltersChange, initialFilters }: Searc
             min="0"
             value={filters.maxPrice || ""}
             onChange={(e) => handleInputChange("maxPrice", e.target.value ? parseFloat(e.target.value) : undefined)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-slate-900 focus:ring-4 focus:ring-slate-900/5"
           />
         </div>
 
-        {/* Duration */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+        <div className="space-y-2">
+          <label className="text-sm font-medium text-slate-700">
             Duration (minutes)
           </label>
           <select
             value={filters.duration || ""}
             onChange={(e) => handleInputChange("duration", e.target.value ? parseInt(e.target.value) : undefined)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-slate-900 outline-none transition focus:border-slate-900 focus:ring-4 focus:ring-slate-900/5"
           >
             <option value="">All durations</option>
             {popularDurations.map((duration) => (
@@ -104,15 +124,6 @@ export default function SearchFilters({ onFiltersChange, initialFilters }: Searc
             ))}
           </select>
         </div>
-      </div>
-
-      <div className="mt-4 flex justify-end">
-        <button
-          onClick={clearFilters}
-          className="px-4 py-2 text-gray-600 hover:text-gray-800 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"
-        >
-          Clear Filters
-        </button>
       </div>
     </div>
   );
